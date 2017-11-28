@@ -1,0 +1,49 @@
+
+select * from atributo
+where esFk = 1
+and
+TipoEntidadFK not IN 
+	(
+	   select nombre from clase 
+	   where nombre = TipoEntidadFK
+	)
+order by idclase
+
+select * from clase
+select * from atributo
+where esColeccion = 1
+and 
+NombreFK not IN 
+	(
+	   select nombre from clase 
+	   where nombre = TipoEntidadFK
+	)
+
+order by idclase
+
+
+
+////////////////
+
+
+select * from atributo
+where esFk = 1
+and
+TipoEntidadFK not IN 
+	(
+	   select nombre from clase 
+	   where nombre = TipoEntidadFK
+	)
+order by idclase
+
+select * from clase
+select * from atributo
+where esColeccion = 1
+and 
+NombreFK not IN 
+	(
+	   select nombre from clase 
+	   where nombre = TipoEntidadFK
+	)
+
+order by idclase

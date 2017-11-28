@@ -1,0 +1,62 @@
+SI la entidad es Account esta es la secuencia
+
+____________________________________
+AccountView.SynchronizeCollections()
+  
+   {
+    TransactionView tv = this.Transactions[i];
+
+     	//Buscar los agregados
+        //Observar que los toma de la coleccion (Transactions) que es el atributo
+        //de la entidad y los pasa a una coleccion de Transactions que estan dentro del 
+        //atributo _aAccount (private)
+		for (int i = 0; i < this.Transactions.Count; i++)
+		{
+         		TransactionView aView = this.Transactions[i];
+			if (aView.Id == 0)
+				this._aAccount.Transactions.Add(aView.MapToEntity());
+		}    
+   }    
+
+________________________
+Entity.Persist
+
+public void Persist()
+		{
+			//si existe una transacción abierta se maneja
+			//esa y no se abre una nueva porque no es posible anidar
+			bool hayTransaccion = this.TransactionContext.InTransaction;
+
+			if (!hayTransaccion)
+				this.TransactionContext.BeginTransaction();
+
+			try
+			{
+				if (this.HasId)
+					this.InternalFullUpdate(this.TransactionContext);
+				else
+					this.InternalFullInsert(this.TransactionContext);
+
+				if (!hayTransaccion)
+					this.TransactionContext.CommitTransaction();
+			}
+			catch (Exception ex)
+			{
+				----
+
+			}
+		}  
+
+------------------------
+Entity.InternalFullUpdate
+ 
+		{
+			if (this.WithPermissionToExecutePersistOrDelete())
+			{
+				InternalSimpleUpdate(currentTransaction);
+
+				UpdateRelatedCollections(currentTransaction, true);
+			}
+			else
+				...
+		}
